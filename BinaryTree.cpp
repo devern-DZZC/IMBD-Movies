@@ -124,21 +124,48 @@ int nodeDepth (BTNode * node) {
 
 
 int height (BTNode * root) {
-
-	return -1;
+	if(root==NULL)
+		return 0;
+	int left = height(root->left);
+	int right = height(root->right);
+	if(left > right)
+		return 1+left;
+	else
+		return 1+right;
 }
 
 
 
 void levelOrder (BTNode * root) {
+	Queue * q = initQueue(0);
+	enqueue(q, root);
+	int levelNum=0;
 	
-	return;
+	while(!isEmptyQueue(q))
+	{
+		int numNodes = sizeQueue(q);
+		
+		for(int i=1;i<=numNodes;i++)
+		{
+			BTNode * p = dequeue(q);
+			cout << p->data.ID << " ";
+			if(p->left != NULL)
+				enqueue(q, p->left);
+			if(p->right != NULL)
+				enqueue(q, p->right);
+		}
+		levelNum++;
+	}
 }
 
 
 
 void clearBT (BTNode * root) {
-	
-	return;
+	if(root==NULL)
+		return;
+	clearBT(root->left);
+	clearBT(root->right);
+	delete root;
+	root=NULL;
 }
 
