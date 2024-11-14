@@ -5,6 +5,7 @@
 using namespace std;
 
 BTNode * initBSTFromFile (char fileName[]);
+int idConvert(string id);
 BTNode * insertBST (BTNode * root, Movie data);
 BTNode * insertBSTRec (BTNode * root, Movie data);
 BTNode * containsBST (BTNode * root, string key);
@@ -13,6 +14,7 @@ BTNode * deleteBST (BTNode * root, string key);
 BTNode * minimumBST (BTNode * root);
 BTNode * maximumBST (BTNode * root);
 BTNode * inOrderSuccessor (BTNode * btNode);
+int countNTwithOneChild(BTNode * root);
 void rangeBST (BTNode * root, string lowerID, string upperID);
 
 void statisticsBST (BTNode * root);

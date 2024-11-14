@@ -160,9 +160,7 @@ void insertHT (HashTable * ht, Movie movie) {
 	int loc = id % ht->sizeTable;
 	LLNode * top = ht->elements[loc];
 	
-	LLNode * newNode = new LLNode;
-	newNode->data = movie;
-	newNode->next = NULL;
+	LLNode * newNode = createNode(movie);
 	if (top==NULL)
 		ht->elements[loc] = newNode;
 	else
