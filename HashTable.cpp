@@ -5,14 +5,36 @@
 #include <conio.h>
 #include "Data.h"
 #include "HashTable.h"
+#include "NodeTypes.h"
    using namespace std;
 
 
 HashTable * initHashTable (int sizeTable) {
-
-	return NULL;
+	
+	if (sizeTable==0)
+		return NULL;
+	HashTable * ht = new HashTable;
+	for(int i=0;i<sizeTable;i++)
+		ht->elements[i] = NULL;
+	ht->sizeTable = sizeTable;
+	return ht;
 }
 
+int idConvert(string id)
+{
+	int number=0;
+	int i = id.length()-1;
+	int mult=1;
+	
+	while (i>1)
+	{
+		int n = id[i]-'0';
+		number += (n*mult);
+		mult *= 10;
+		i--;
+	}
+	return number;
+}
 
 
 HashTable * initHashTableFromFile (int sizeTable, char fileName[]) {
@@ -54,7 +76,17 @@ HashTable * initHashTableFromFile (int sizeTable, char fileName[]) {
 
 
 int containsHT (HashTable * ht, string key) {
+	int num = idConvert(key);
+	int loc = num % ht->sizeTable;
+	LLNode * top = ht->elements[loc];
+	LLNode * curr = top;
 	
+	while(curr != NULL)
+	{
+		if(curr->data.ID == key)
+			return loc;
+		curr = curr->next;
+	}
 	return -1;
 }
 
@@ -73,15 +105,39 @@ void displayMovie (Movie movie) {
 
 
 void displayMovieHT (HashTable * ht, string key) {
-
+	int loc = containsHT(ht, key);
+	if(loc != -1)
+	{
+		LLNode * top = ht->elements[loc];
+		LLNode * curr = top;
+		
+		while(curr != NULL)
+		{
+			if(curr->data.ID == key){
+				displayMovie(curr->data);
+				return;
+			}
+			curr = curr->next;
+		}
+	}
 	return;
 }
 
 
 	
 int lengthChain (HashTable * ht, int location) {
+	LLNode * top = ht->elements[location];
+	LLNode * curr = top;
 	
-	return 0;
+	if(top==NULL)
+		return 0;
+	int count = 0;
+	while (curr!=NULL)
+	{
+		count++;
+		curr = curr->next;
+	}
+	return count;
 }
 
 
@@ -100,21 +156,71 @@ LLNode * createNode (Movie movie) {
 
 
 void insertHT (HashTable * ht, Movie movie) {
+	int id = idConvert(movie.ID);
+	int loc = id % ht->sizeTable;
+	LLNode * top = ht->elements[loc];
 	
-	return;	
+	LLNode * newNode = new LLNode;
+	newNode->data = movie;
+	newNode->next = NULL;
+	if (top==NULL)
+		ht->elements[loc] = newNode;
+	else
+	{
+		newNode->next = top;
+		ht->elements[loc] = newNode;
+	}
 }
 
 
 
 void statisticsHT (HashTable * ht) {
-
-	return;
+	int empty = 0;
+	int longest=0;
+	for(int i=0;i<ht->sizeTable;i++)
+	{
+		if(ht->elements[i]==NULL)
+			empty++;
+		else{
+			int count = lengthChain(ht, i);
+			if(count > longest)
+				longest = count;
+		}
+	}
+	int filled = ht->sizeTable - empty;
+	
+	cout << "The number of locations in the hash table that are filled are: "<<filled<<endl;
+	cout << "The number of locations in the hash table that are empty are: "<<empty<<endl;
+	cout << "The length of the longest chain is: "<<longest<<endl;
 }
 
 
 
 
 void deleteHT (HashTable * ht, string key) {
+	int num = idConvert(key);
+	int loc = num % ht->sizeTable;
+	LLNode * top = ht->elements[loc];
+	LLNode * curr = top;
+	LLNode * pred = NULL;
+	
+	while(curr != NULL)
+	{
+		if(curr->data.ID == key)
+		{
+			if(pred==NULL)
+				ht->elements[loc] = curr->next;
+			else
+				pred->next = curr->next;
+			delete curr;
+			return;	
+		}
+		else
+		{
+			pred = curr;
+			curr = curr->next;
+		}
+	}
 	return;
 }
 	
