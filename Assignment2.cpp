@@ -15,10 +15,111 @@ int main () {
 
 	char fileName [25] = "Movies.txt";
 	
+	cout << "Creating hash table ...\n->  ";
+	HashTable * ht = initHashTable(23);
+	ht = initHashTableFromFile(23, fileName);
+	
+	cout << "\nCreating BST ...\n->  ";
+	BTNode * root = initBSTFromFile(fileName);
+	cout << "Root of BST created with "<<root->data.ID<<endl;
+	
+	cout << "Processing commands from commands file ... "<<endl;
 	char commandsFile [25] = "Commands.txt";
 	ifstream inputFile;
-
+	inputFile.open(commandsFile);
+	if(!inputFile.is_open())
+	{
+		cout << "Error opening file...\n";
+		exit(1);
+	}
 	int command;
+	string id, genre, title, upperID, file;
+	int year, duration;
+	inputFile >> command;
+	int i=0;
+	while(command != QUIT)
+	{
+		
+		cout << "\nCOMMAND "<<command<<":\n\n";
+		if(command == 10)
+		{
+			inputFile >> id >> year >> duration >> genre >> ws;
+			getline (inputFile, title);
+			Movie movie;
+			movie.ID = id;
+			movie.duration = duration;
+			movie.yearReleased = year;
+			movie.genre = genre;
+			movie.title = title;
+			
+			displayMovie(movie);
+			if(containsHT(ht, id) == -1 || containsBST(root, id) == NULL)
+			{
+				insertHT(ht, movie);
+				root = insertBST(root, movie);
+				cout << "--> Movie "<< movie.ID <<" inserted in hash table and BST.\n";
+
+			}
+				
+		}
+		if(command == 11)
+		{
+			inputFile >> id;
+			if(containsHT(ht, id) != -1)
+			{
+				cout << "--> The movie "<<id<<" is in the hash table.\n";
+				displayMovieHT(ht, id);
+			}
+			
+			if(containsBST(root, id) != NULL)
+			{
+				cout << "--> The movie "<<id<<" is in the BST.\n";
+				BTNode * node = containsBST(root, id);
+				displayMovie(node->data);
+			}
+		}
+		if(command == 12)
+		{
+			inputFile >> id;
+			deleteHT(ht, id);
+			BTNode * node = deleteBST(root, id);
+			if(node!=NULL)
+				cout << "The movie "<<id<<" is NOT in the BST.\n";
+		}
+		if(command == 13)
+		{
+			statisticsHT (ht);
+			cout << endl;
+			statisticsBST (root);
+			cout << endl;
+		}
+		if(command == 20)
+		{
+			cout << "Inorder traversal of BST:\n";
+			inOrder(root);
+			cout << endl;
+		}
+		if(command==21)
+		{
+			cout << "Level Order traversal of BST:\n";
+			levelOrder(root);
+			cout << endl;
+		}
+		if(command == 22)
+		{
+			inputFile >> id >> upperID;
+			cout << "Displaying all keys in the BST between "<<id<<" and "<<upperID<<":\n";
+			rangeBST(root, id, upperID);
+			cout << endl;
+		}
+		if(command == 23)
+		{
+			inputFile >> file;
+			cout << file <<endl;
+		}
+		inputFile >> command;
+		i++;
+	}
 	
 	return 0;
 }

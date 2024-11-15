@@ -43,21 +43,21 @@ BTNode * initBSTFromFile (char fileName[]) {
 	return root;
 }
 
-//int idConvert(string id)
-//{
-//	int number=0;
-//	int i = id.length()-1;
-//	int mult=1;
-//	
-//	while (i>1)
-//	{
-//		int n = id[i]-'0';
-//		number += (n*mult);
-//		mult *= 10;
-//		i--;
-//	}
-//	return number;
-//}
+int idConvert(string id)
+{
+	int number=0;
+	int i = id.length()-1;
+	int mult=1;
+	
+	while (i>1)
+	{
+		int n = id[i]-'0';
+		number += (n*mult);
+		mult *= 10;
+		i--;
+	}
+	return number;
+}
 
 
 
@@ -70,7 +70,7 @@ BTNode * insertBST (BTNode * root, Movie data) {
 		return root;
 	}
 	int id = idConvert(root->data.ID);
-	if(id < idConvert(data.ID))
+	if(idConvert(data.ID) < id)
 		root->left = insertBST(root->left, data);
 	else
 		root->right = insertBST(root->right, data);
@@ -164,10 +164,11 @@ void statisticsBST (BTNode * root) {
 	BTNode * maxNode = maximumBST(root);
 	BTNode * minNode = minimumBST(root);
 	
-	cout << "Height of BST: "<<h<<endl;
+	cout << "Statistics on BST:"<<endl;
+	cout << "Height of binary tree: "<<h<<endl;
 	cout << "Number of non-terminal nodes with one child: "<<ntOneChild<<endl;
-	cout << "Minimum Node: "<<minNode->data.ID<<endl;
-	cout << "Maximum Node: "<<maxNode->data.ID<<endl;
+	cout << "Smallest key: "<<minNode->data.ID<<endl;
+	cout << "Biggest Key: "<<maxNode->data.ID<<endl;
 		
 }
 

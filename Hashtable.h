@@ -9,7 +9,7 @@ struct HashTable {
 };
 	
 HashTable * initHashTable (int sizeTable);
-int idConvert(Movie movie);
+int idConvert(string key);
 HashTable * initHashTableFromFile (int sizeTable, char fileName[]);
 void insertHT (HashTable * ht, Movie m);
 int containsHT (HashTable * ht, string key);

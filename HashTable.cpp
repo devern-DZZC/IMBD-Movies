@@ -20,21 +20,21 @@ HashTable * initHashTable (int sizeTable) {
 	return ht;
 }
 
-int idConvert(string id)
-{
-	int number=0;
-	int i = id.length()-1;
-	int mult=1;
-	
-	while (i>1)
-	{
-		int n = id[i]-'0';
-		number += (n*mult);
-		mult *= 10;
-		i--;
-	}
-	return number;
-}
+//int idConvert(string id)
+//{
+//	int number=0;
+//	int i = id.length()-1;
+//	int mult=1;
+//	
+//	while (i>1)
+//	{
+//		int n = id[i]-'0';
+//		number += (n*mult);
+//		mult *= 10;
+//		i--;
+//	}
+//	return number;
+//}
 
 
 HashTable * initHashTableFromFile (int sizeTable, char fileName[]) {
@@ -187,8 +187,9 @@ void statisticsHT (HashTable * ht) {
 	}
 	int filled = ht->sizeTable - empty;
 	
-	cout << "The number of locations in the hash table that are filled are: "<<filled<<endl;
-	cout << "The number of locations in the hash table that are empty are: "<<empty<<endl;
+	cout << "Statistics on hash table:\n";
+	cout << "There are "<<filled<<" locations."<<endl;
+	cout << "There are "<<empty<<" empty locations."<<endl;
 	cout << "The length of the longest chain is: "<<longest<<endl;
 }
 
@@ -219,6 +220,7 @@ void deleteHT (HashTable * ht, string key) {
 			curr = curr->next;
 		}
 	}
+	cout << "The movie "<<key<<" is NOT in the hash table.\n";
 	return;
 }
 	

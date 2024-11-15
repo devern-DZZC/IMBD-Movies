@@ -137,14 +137,14 @@ int height (BTNode * root) {
 
 
 void levelOrder (BTNode * root) {
-	Queue * q = initQueue(0);
+	Queue * q = initQueue(10);
 	enqueue(q, root);
 	int levelNum=0;
 	
 	while(!isEmptyQueue(q))
 	{
 		int numNodes = sizeQueue(q);
-		
+		cout << "Level "<<levelNum<<": ";
 		for(int i=1;i<=numNodes;i++)
 		{
 			BTNode * p = dequeue(q);
@@ -155,6 +155,7 @@ void levelOrder (BTNode * root) {
 				enqueue(q, p->right);
 		}
 		levelNum++;
+		cout << endl;
 	}
 }
 
