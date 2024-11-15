@@ -71,9 +71,17 @@ BTNode * insertBST (BTNode * root, Movie data) {
 	}
 	int id = idConvert(root->data.ID);
 	if(idConvert(data.ID) < id)
-		root->left = insertBST(root->left, data);
+	{
+		BTNode* leftChild = insertBST(root->left, data);
+        root->left = leftChild;
+        leftChild->parent = root;
+	}
 	else
-		root->right = insertBST(root->right, data);
+	{
+		BTNode* rightChild = insertBST(root->right, data);
+        root->right = rightChild;
+        rightChild->parent = root;
+	}
 	return root;
 }
 
@@ -150,9 +158,9 @@ int countNTwithOneChild(BTNode * root)
 	if(root==NULL)
 		return 0;
 	if(root->left == NULL && root->right==NULL)
-		return 0;
+		return countNTwithOneChild(root->left) + countNTwithOneChild(root->right);
 	if(root->left != NULL && root->right != NULL)
-		return 0;
+		return countNTwithOneChild(root->left) + countNTwithOneChild(root->right);
 	return 1 + countNTwithOneChild(root->left) + countNTwithOneChild(root->right);
 	
 }	
@@ -172,23 +180,40 @@ void statisticsBST (BTNode * root) {
 		
 }
 
-bool isIsomorphic (BTNode * root1, BTNode * root2) {
-    if (root1 == NULL && root2 == NULL)
-        return true;
-    if (root1 == NULL || root2 == NULL)
-        return false;
-    if (root1->data.ID != root2->data.ID)
-        return false;
+void populate(BTNode * root, int arr[], int &size)
+{
+	if(root==NULL)
+		return;
+	populate(root->left, arr, size);
+	arr[size] = idConvert(root->data.ID);
+	size++;
+	populate(root->right, arr, size);
+}
 
-    return (isIsomorphic(root1->left, root2->left) && isIsomorphic(root1->right, root2->right)) ||
-           (isIsomorphic(root1->left, root2->right) && isIsomorphic(root1->right, root2->left));
+bool isIsomorphic (BTNode * root1, BTNode * root2) {
+    int arr1[MAX_ELEMENTS], arr2[MAX_ELEMENTS];
+    int arrSize1=0, arrSize2=0;
+    populate(root1, arr1, arrSize1);
+    populate(root2, arr2, arrSize2);
+    
+    if(arrSize1 != arrSize2)
+    	return false;
+    for(int i=0;i<arrSize1;i++)
+    {
+    	if(arr1[i] != arr2[i])
+    		return false;
+	}
+	return true;
 }
 
 
 BTNode * deleteBST (BTNode * root, string key) { 
+	if(root==NULL)
+		return NULL;
 	BTNode * node = containsBST(root, key);
 	if(node==NULL)
 		return NULL;
+		
 	if(node->left==NULL && node->right==NULL)
 	{
 		BTNode * parent = node->parent;
@@ -196,33 +221,34 @@ BTNode * deleteBST (BTNode * root, string key) {
 			parent->left = NULL;
 		else
 			parent->right = NULL;
-		
-		if(node->left==NULL)
-		{
-			BTNode * parent = node->parent;
-			if(parent->left == node)
-				parent->left = node->right;
-			else
-				parent->right = node->right;
-		}
-		
-		if(node->right==NULL)
-		{
-			BTNode * parent = node->parent;
-			if(parent->left == node)
-				parent->left = node->left;
-			else
-				parent->right = node->left;
-		}
-		
-		BTNode * succ = minimumBST(node->right);
-		node->data = succ->data;
-		parent = succ->parent;
-		if(parent==node)
-			node->right = succ->right;
-		else
-			parent->left = succ->right;
 	}
-
+		
+	if(node->left==NULL)
+	{
+		BTNode * parent = node->parent;
+		if(parent->left == node)
+			parent->left = node->right;
+		else
+			parent->right = node->right;
+	}
+		
+	if(node->right==NULL)
+	{
+		BTNode * parent = node->parent;
+		if(parent->left == node)
+			parent->left = node->left;
+		else
+			parent->right = node->left;
+	}
+		
+	BTNode * succ = minimumBST(node->right);
+	node->data = succ->data;
+	BTNode * parent = succ->parent;
+	if(parent==node)
+		node->right = succ->right;
+	else
+		parent->left = succ->right;
+		
+	return root;
 }
 

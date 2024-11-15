@@ -82,15 +82,27 @@ int main () {
 				displayMovie(node->data);
 			}
 			else
-				cout << "--> The movie "<<id<<" is NOT in the hashtable.\n";
+				cout << "--> The movie "<<id<<" is NOT in the BST.\n";
 		}
 		if(command == 12)
 		{
 			inputFile >> id;
-			deleteHT(ht, id);
+			if(containsHT(ht, id) == -1)
+				cout << "--> Movie "<<id<<" is NOT in the hash table.\n";
+			else
+			{
+				deleteHT(ht, id);
+				if(containsHT(ht, id) == -1)
+					cout << "--> Movie "<<id<<" deleted from hash table.\n";
+				else
+					cout << "--> Movie "<<id<<" NOT deleted from hash table.\n";
+			}
+				
 			BTNode * node = deleteBST(root, id);
-			if(node!=NULL)
-				cout << "The movie "<<id<<" is NOT in the BST.\n";
+			if(node==NULL)
+				cout << "--> The movie "<<id<<" is NOT in the BST.\n";
+			else
+				cout <<"--> Movie "<<id<<" deleted from BST.\n";
 		}
 		if(command == 13)
 		{
