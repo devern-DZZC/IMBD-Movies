@@ -172,18 +172,17 @@ void statisticsBST (BTNode * root) {
 		
 }
 
-
-
 bool isIsomorphic (BTNode * root1, BTNode * root2) {
-	if(root1==NULL && root2==NULL)
-		return true;
-	if (root1 == NULL || root2 == NULL)
-		return false;
-	if(idConvert(root1->data.ID) != idConvert(root2->data.ID))
-		return false;
-	return isIsomorphic(root1->left, root2->left) && isIsomorphic(root1->right, root2->right);
-}
+    if (root1 == NULL && root2 == NULL)
+        return true;
+    if (root1 == NULL || root2 == NULL)
+        return false;
+    if (root1->data.ID != root2->data.ID)
+        return false;
 
+    return (isIsomorphic(root1->left, root2->left) && isIsomorphic(root1->right, root2->right)) ||
+           (isIsomorphic(root1->left, root2->right) && isIsomorphic(root1->right, root2->left));
+}
 
 
 BTNode * deleteBST (BTNode * root, string key) { 

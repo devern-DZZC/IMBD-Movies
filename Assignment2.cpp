@@ -23,7 +23,7 @@ int main () {
 	BTNode * root = initBSTFromFile(fileName);
 	cout << "Root of BST created with "<<root->data.ID<<endl;
 	
-	cout << "Processing commands from commands file ... "<<endl;
+	cout << "\nProcessing commands from commands file ... "<<endl;
 	char commandsFile [25] = "Commands.txt";
 	ifstream inputFile;
 	inputFile.open(commandsFile);
@@ -60,6 +60,8 @@ int main () {
 				cout << "--> Movie "<< movie.ID <<" inserted in hash table and BST.\n";
 
 			}
+			else
+				cout << "--> Movie "<< movie.ID <<" already in hash table and BST.\n";
 				
 		}
 		if(command == 11)
@@ -70,6 +72,8 @@ int main () {
 				cout << "--> The movie "<<id<<" is in the hash table.\n";
 				displayMovieHT(ht, id);
 			}
+			else
+				cout << "--> The movie "<<id<<" is NOT in the hashtable.\n";
 			
 			if(containsBST(root, id) != NULL)
 			{
@@ -77,6 +81,8 @@ int main () {
 				BTNode * node = containsBST(root, id);
 				displayMovie(node->data);
 			}
+			else
+				cout << "--> The movie "<<id<<" is NOT in the hashtable.\n";
 		}
 		if(command == 12)
 		{
@@ -115,7 +121,26 @@ int main () {
 		if(command == 23)
 		{
 			inputFile >> file;
-			cout << file <<endl;
+			
+			char newFile[25];
+			int i=0;
+			while (i<file.length())
+			{
+				newFile[i] = file[i];
+				i++;
+			}
+			newFile[i]='\0';
+			cout << "\nCreating BST ...\n->  ";
+			BTNode * newTree = initBSTFromFile(newFile);
+			cout << "Root of BST created with "<<newTree->data.ID<<endl;
+			cout << "Level Order traversal of BST:\n";
+			levelOrder(root);
+			cout << endl;
+			if(isIsomorphic(root, newTree))
+				cout << "--> BSTs are isomorphic.\n";
+			else
+				cout << "--> BSTs are NOT isomorphic.\n";
+			clearBT(newTree);
 		}
 		inputFile >> command;
 		i++;

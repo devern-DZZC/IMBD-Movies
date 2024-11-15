@@ -6,7 +6,7 @@
 #include "Data.h"
 #include "HashTable.h"
 #include "NodeTypes.h"
-   using namespace std;
+using namespace std;
 
 
 HashTable * initHashTable (int sizeTable) {
@@ -19,22 +19,6 @@ HashTable * initHashTable (int sizeTable) {
 	ht->sizeTable = sizeTable;
 	return ht;
 }
-
-//int idConvert(string id)
-//{
-//	int number=0;
-//	int i = id.length()-1;
-//	int mult=1;
-//	
-//	while (i>1)
-//	{
-//		int n = id[i]-'0';
-//		number += (n*mult);
-//		mult *= 10;
-//		i--;
-//	}
-//	return number;
-//}
 
 
 HashTable * initHashTableFromFile (int sizeTable, char fileName[]) {
@@ -115,6 +99,8 @@ void displayMovieHT (HashTable * ht, string key) {
 		{
 			if(curr->data.ID == key){
 				displayMovie(curr->data);
+				int length = lengthChain(ht, loc);
+				cout << "--> The length of the chain is "<<length<<endl<<endl;
 				return;
 			}
 			curr = curr->next;
