@@ -32,11 +32,11 @@ int main () {
 		cout << "Error opening file...\n";
 		exit(1);
 	}
+	
 	int command;
 	string id, genre, title, upperID, file;
 	int year, duration;
 	inputFile >> command;
-	int i=0;
 	while(command != QUIT)
 	{
 		
@@ -113,20 +113,20 @@ int main () {
 		}
 		if(command == 20)
 		{
-			cout << "Inorder traversal of BST:\n";
+			cout << "Inorder traversal of BST:\n\n";
 			inOrder(root);
 			cout << endl;
 		}
 		if(command==21)
 		{
-			cout << "Level Order traversal of BST:\n";
+			cout << "Level Order traversal of BST:\n\n";
 			levelOrder(root);
 			cout << endl;
 		}
 		if(command == 22)
 		{
 			inputFile >> id >> upperID;
-			cout << "Displaying all keys in the BST between "<<id<<" and "<<upperID<<":\n";
+			cout << "Displaying all keys in the BST between "<<id<<" and "<<upperID<<":\n\n";
 			rangeBST(root, id, upperID);
 			cout << endl;
 		}
@@ -142,10 +142,10 @@ int main () {
 				i++;
 			}
 			newFile[i]='\0';
-			cout << "\nCreating BST ...\n->  ";
+			cout << "Creating BST ...\n->  ";
 			BTNode * newTree = initBSTFromFile(newFile);
 			cout << "Root of BST created with "<<newTree->data.ID<<endl;
-			cout << "Level Order traversal of BST:\n";
+			cout << "\nLevel Order traversal of BST:\n\n";
 			levelOrder(root);
 			cout << endl;
 			if(isIsomorphic(root, newTree))
@@ -155,7 +155,6 @@ int main () {
 			clearBT(newTree);
 		}
 		inputFile >> command;
-		i++;
 	}
 	
 	return 0;

@@ -135,22 +135,31 @@ BTNode * inOrderSuccessor (BTNode * node) {
 	return parent;
 }
 
-void inOrderRange(BTNode * root, string lowerID, string upperID) {
+void inOrderRange(BTNode * root, string lowerID, string upperID, int &count) {
 	if (root == NULL)
 		return;
 
 	if (idConvert(root->data.ID) > idConvert(lowerID))
-		inOrderRange(root->left, lowerID, upperID);
+		inOrderRange(root->left, lowerID, upperID, count);
 
 	if (idConvert(root->data.ID) >= idConvert(lowerID) && idConvert(root->data.ID) <= idConvert(upperID))
+	{
 		cout << root->data.ID << " ";
+		count++;
+	}
 
 	if (idConvert(root->data.ID) < idConvert(upperID))
-		inOrderRange(root->right, lowerID, upperID);
+		inOrderRange(root->right, lowerID, upperID, count);
 }
 
 void rangeBST(BTNode * root, string lowerID, string upperID) {
-	inOrderRange(root, lowerID, upperID);
+	int count=0;
+	inOrderRange(root, lowerID, upperID, count);
+	cout<<endl;
+	if(count > 0)
+		cout <<"--> "<<count<<" keys were found in the range given.\n";
+	else
+		cout << "--> Range not within keys of BST.\n";
 }
 
 int countNTwithOneChild(BTNode * root)
